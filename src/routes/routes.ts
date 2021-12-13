@@ -1,4 +1,4 @@
-import {Request, Response, Router } from 'express'
+import { Request, Response, Router } from 'express'
 import { Autos, iAuto } from '../model/autos'
 import { db } from '../database/database'
 
@@ -8,20 +8,20 @@ class DatoRoutes {
     constructor() {
         this._router = Router()
     }
-    get router(){
+    get router() {
         return this._router
     }
 
     private getAutos = async (req: Request, res: Response) => {
         await db.conectarBD()
-        .then( async (mensaje) => {
-            console.log(mensaje)
-            const query  = await Autos.find({})
-            res.json(query)
-        })
-        .catch((mensaje) => {
-            res.send(mensaje)
-        })
+            .then(async (mensaje) => {
+                console.log(mensaje)
+                const query = await Autos.find({})
+                res.json(query)
+            })
+            .catch((mensaje) => {
+                res.send(mensaje)
+            })
 
         db.desconectarBD()
     }
@@ -29,18 +29,18 @@ class DatoRoutes {
     private getAuto = async (req: Request, res: Response) => {
         const valor = req.params.valor
         await db.conectarBD()
-        .then( async (mensaje) => {
-            console.log(mensaje)
-            const query  = await Autos.aggregate([
-                {
-                  $match:{"_matricula" : valor}
-      
-                }])
-            res.json(query)
-        })
-        .catch((mensaje) => {
-            res.send(mensaje)
-        })
+            .then(async (mensaje) => {
+                console.log(mensaje)
+                const query = await Autos.aggregate([
+                    {
+                        $match: { "_matricula": valor }
+
+                    }])
+                res.json(query)
+            })
+            .catch((mensaje) => {
+                res.send(mensaje)
+            })
 
     }
 
@@ -48,29 +48,29 @@ class DatoRoutes {
         const auto = new Autos(req.body)
         console.log(auto)
         await db.conectarBD()
-        .then( async (mensaje) => {
-            //let pSchema : any
+            .then(async (mensaje) => {
+                //let pSchema : any
 
-            
-            //pSchema.save() De aqui para abajo esta bien*/
-            /*pSchema = new Autos({
-                _tipoObjeto: auto._tipoObjeto,
-                _precioBase: auto._precioBase,
-                _potenciaMotor: auto._potenciaMotor,
-                _traccion: auto._traccion,
-                _matricula: auto._matricula
-            })*/
 
-            console.log(mensaje)
-            //await pSchema.save()
-            await auto.save()
-            .then ((doc:any) => res.send("documento salvado "+doc))
-            .catch((err:any) => res.send(err))
-        })
+                //pSchema.save() De aqui para abajo esta bien*/
+                /*pSchema = new Autos({
+                    _tipoObjeto: auto._tipoObjeto,
+                    _precioBase: auto._precioBase,
+                    _potenciaMotor: auto._potenciaMotor,
+                    _traccion: auto._traccion,
+                    _matricula: auto._matricula
+                })*/
 
-        .catch((mensaje) => {
-            res.send(mensaje)
-        })
+                console.log(mensaje)
+                //await pSchema.save()
+                await auto.save()
+                    .then((doc: any) => res.send("documento salvado " + doc))
+                    .catch((err: any) => res.send(err))
+            })
+
+            .catch((mensaje) => {
+                res.send(mensaje)
+            })
 
         db.desconectarBD()
     }
@@ -83,23 +83,23 @@ class DatoRoutes {
         console.log(auto)
         console.log(auto)
         await db.conectarBD()
-        .then( async (mensaje) => {
-            console.log(mensaje)
-            const query  = await Autos.findOneAndUpdate(
-                {_matricula: auto._matricula},
-                {
-                    _tipoObjeto: auto._tipoObjeto,
-                    _precioBase: auto._precioBase,
-                    _potenciaMotor: auto._potenciaMotor,
-                    _traccion: auto._traccion, 
-                },
-                {new: true}
-            )
-            res.json(query)
-        })
-        .catch((mensaje) => {
-            res.send(mensaje)
-        })
+            .then(async (mensaje) => {
+                console.log(mensaje)
+                const query = await Autos.findOneAndUpdate(
+                    { _matricula: auto._matricula },
+                    {
+                        _tipoObjeto: auto._tipoObjeto,
+                        _precioBase: auto._precioBase,
+                        _potenciaMotor: auto._potenciaMotor,
+                        _traccion: auto._traccion,
+                    },
+                    { new: true }
+                )
+                res.json(query)
+            })
+            .catch((mensaje) => {
+                res.send(mensaje)
+            })
 
         db.desconectarBD()
     }
@@ -107,22 +107,22 @@ class DatoRoutes {
     private modificarAuto2 = async (req: Request, res: Response) => {
 
         await db.conectarBD()
-        .then( async (mensaje) => {
-            console.log(mensaje)
-            const matriculaP = req.params.matriculaP
-            const cambioP = req.params.cambioP
-            const query  = await Autos.findOneAndUpdate(
-                {_matricula: matriculaP},
-                {
-                    _potenciaMotor: cambioP
-                },
-                {new: true}
-            )
-            res.json(query)
-        })
-        .catch((mensaje) => {
-            res.send(mensaje)
-        })
+            .then(async (mensaje) => {
+                console.log(mensaje)
+                const matriculaP = req.params.matriculaP
+                const cambioP = req.params.cambioP
+                const query = await Autos.findOneAndUpdate(
+                    { _matricula: matriculaP },
+                    {
+                        _potenciaMotor: cambioP
+                    },
+                    { new: true }
+                )
+                res.json(query)
+            })
+            .catch((mensaje) => {
+                res.send(mensaje)
+            })
 
         db.desconectarBD()
     }
@@ -146,13 +146,30 @@ db.desconectarBD()
     }*/
 
 
+    private deleteAutos = async (req: Request, res: Response) => {
+        const matricula = req.params
+        await db.conectarBD()
+        console.log("Estamos borrando")
+        await Autos.findOneAndDelete(
+            {
+                _matricula: matricula
 
-    misRutas(){
+            }
+        )
+            .then((doc: any) => res.send("Documento borrado " + doc))
+            .catch((err: any) => res.send('Error:  ' + err))
+        await db.desconectarBD()
+    }
+
+
+
+    misRutas() {
         this._router.get('/autos', this.getAutos)
         this._router.get('/autos/:valor', this.getAuto)
         this._router.post('/auto', this.crearAuto)
         this._router.put('/modificar', this.modificarAuto)
         this._router.put('/mod/:matriculaP/:cambioP', this.modificarAuto2)
+        this._router.delete('/auto/:matricula', this.deleteAutos)
         //this._router.put('/autos/:matriculax/:cambio', this.updatePm)
     }
 
