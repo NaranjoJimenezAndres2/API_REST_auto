@@ -147,12 +147,13 @@ db.desconectarBD()
 
 
     private deleteAutos = async (req: Request, res: Response) => {
-        const matricula = req.params
+        const { matricula } = req.params
+
         await db.conectarBD()
         console.log("Estamos borrando")
         await Autos.findOneAndDelete(
             {
-                _matricula: matricula
+                "_matricula": matricula
 
             }
         )

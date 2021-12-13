@@ -13,7 +13,7 @@ class Server {
     }
     private async config(){
 
-        this.app.set('port', process.env.PORT || 3000)
+        this.app.set('port', process.env.PORT || 3800)
         this.app.use(cors()) // evitar el error CORS
 
         this.app.use(express.json()) // para que nuestro servidor entienda

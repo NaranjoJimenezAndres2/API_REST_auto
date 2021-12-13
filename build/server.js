@@ -24,7 +24,7 @@ class Server {
     }
     config() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.app.set('port', process.env.PORT || 3000);
+            this.app.set('port', process.env.PORT || 3800);
             this.app.use((0, cors_1.default)()); // evitar el error CORS
             this.app.use(express_1.default.json()); // para que nuestro servidor entienda
             // los formatos json desde clientes
